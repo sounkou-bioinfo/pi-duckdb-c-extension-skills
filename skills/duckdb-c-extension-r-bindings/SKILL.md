@@ -80,6 +80,64 @@ For projects with many SQL functions, a catalog-driven approach often helps gene
 - extension function reference pages
 - tables for README/pkgdown sites
 
+### 6) Prefer `README.Rmd` with a custom knitr engine for executable docs
+
+A strong pattern used in both DuckTinyCC and DuckHTS is:
+
+- keep `README.md` generated from `README.Rmd`
+- define a custom knitr `sql` engine near the top of the document
+- run real DuckDB CLI examples from documentation chunks
+- optionally auto-load the built extension before each SQL chunk
+- include generated function-catalog markdown instead of hand-maintaining long function lists
+
+This keeps docs closer to the real extension workflow and makes drift much easier to catch.
+
+#### What DuckTinyCC shows
+
+DuckTinyCC uses a simple custom `sql` engine in `README.Rmd` that sends chunk contents to `duckdb -unsigned` and returns the output through knitr.
+
+That is a good minimal pattern when you want runnable SQL docs without a lot of wrapper logic.
+
+#### What DuckHTS adds
+
+DuckHTS uses the same general approach but adds convenience logic to auto-load the built extension path before each SQL chunk.
+
+That is a strong default when most examples should run against the just-built extension and you want short, readable SQL chunks in docs.
+
+#### Generic example
+
+A minimal example looks like:
+
+```r
+knitr::knit_engines$set(sql = function(options) {
+  code <- paste(options$code, collapse = "\n")
+  extension_path <- normalizePath("build/release/myext.duckdb_extension", mustWork = FALSE)
+  extension_path <- gsub("'", "''", extension_path, fixed = TRUE)
+  code <- paste(sprintf("LOAD '%s';", extension_path), code, sep = "\n")
+
+  if (isTRUE(options$eval)) {
+    out <- system2("duckdb", "-unsigned", input = code, stdout = TRUE, stderr = TRUE)
+    status <- attr(out, "status")
+    if (!is.null(status) && status != 0) {
+      stop(paste(out, collapse = "\n"))
+    }
+    knitr::engine_output(options, code, out)
+  } else {
+    knitr::engine_output(options, code, NULL)
+  }
+})
+```
+
+Then the README can contain direct SQL chunks such as:
+
+````markdown
+```{sql eval=TRUE, collapse=FALSE, comment=""}
+SELECT * FROM my_table_function('example.dat');
+```
+````
+
+If the project also generates a function catalog, prefer embedding that generated markdown in the README instead of copying the same list by hand.
+
 ## Good outcomes
 
 - clean R ergonomics over a native core
@@ -103,3 +161,4 @@ For projects with many SQL functions, a catalog-driven approach often helps gene
 
 - [R package layout pattern](references/r-package-layout-pattern.md)
 - [Wrapper responsibility split](references/wrapper-responsibility-split.md)
+- [README.Rmd custom knitr engine pattern](references/readme-rmd-custom-engine-pattern.md)

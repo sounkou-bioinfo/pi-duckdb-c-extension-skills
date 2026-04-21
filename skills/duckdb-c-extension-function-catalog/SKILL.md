@@ -109,3 +109,5 @@ If you generate files from the catalog, CI should detect drift.
 
 - [Functions YAML pattern](references/functions-yaml-pattern.md)
 - [Catalog generation checklist](references/catalog-generation-checklist.md)
+- [Example catalog source](references/functions.example.yaml)
+- [Generator stub](references/generate-function-catalog.sh)

@@ -137,3 +137,4 @@ A useful generic split is:
 
 - [Runtime layering checklist](references/runtime-layering-checklist.md)
 - [State ownership patterns](references/state-ownership-patterns.md)
+- [DuckTinyCC init case study](references/ducktinycc-init-case-study.md)

@@ -8,10 +8,10 @@ Pi skills for AI-assisted design and implementation of DuckDB extensions written
 pi install git:github.com/sounkou-bioinfo/pi-duckdb-c-extension-skills
 ```
 
-Pin the initial release:
+Pin a release:
 
 ```bash
-pi install git:github.com/sounkou-bioinfo/pi-duckdb-c-extension-skills@v0.1.0
+pi install git:github.com/sounkou-bioinfo/pi-duckdb-c-extension-skills@v0.2.0
 ```
 
 ## Included skills
@@ -89,6 +89,35 @@ These skills emphasize a few recurring patterns:
 - keep a machine-readable function catalog so docs and wrappers do not rot
 - test real paths, not hidden shortcuts
 
+## Install test snippets
+
+Quick smoke test after install:
+
+```bash
+pi install git:github.com/sounkou-bioinfo/pi-duckdb-c-extension-skills@v0.2.0
+pi list | grep pi-duckdb-c-extension-skills
+```
+
+Suggested prompt to verify skill loading behavior:
+
+```text
+Use the duckdb-c-extension-function-catalog skill and propose a functions.yaml layout for a small DuckDB C extension with one scalar function, one table function, and one deprecated alias.
+```
+
+Suggested prompt to verify architecture guidance:
+
+```text
+Use the duckdb-c-extension-architecture skill and outline a per-database runtime design for a DuckDB C extension that starts a background service and registers SQL functions at load time.
+```
+
+## Included worked references
+
+The package also includes a few concrete supporting references:
+
+- a minimal `functions.example.yaml`
+- a tiny `generate-function-catalog.sh` generator stub
+- a DuckTinyCC case study on using `access->get_database(info)` and an extension-managed persistent connection at init time
+
 ## Update
 
 If installed unpinned:
@@ -106,5 +135,5 @@ pi update git:github.com/sounkou-bioinfo/pi-duckdb-c-extension-skills
 If pinned, move explicitly to the current release:
 
 ```bash
-pi install git:github.com/sounkou-bioinfo/pi-duckdb-c-extension-skills@v0.1.0
+pi install git:github.com/sounkou-bioinfo/pi-duckdb-c-extension-skills@v0.2.0
 ```
