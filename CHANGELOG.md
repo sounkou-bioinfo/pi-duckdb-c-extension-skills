@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1
+
+- Updated the function-catalog skill to recommend DuckHTS-style generated `functions.md` / `functions.tsv` artifacts from a JSON-formatted `functions.yaml` manifest.
+- Replaced the shell/PyYAML function-catalog generator reference with a Python standard-library stub (`generate_function_catalog.py`).
+- Updated the example `functions.example.yaml` to use the JSON-formatted YAML style expected by the Python renderer.
+
 ## 0.2.0
 
 - Added `LICENSE`.

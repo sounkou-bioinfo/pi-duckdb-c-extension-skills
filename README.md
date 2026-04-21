@@ -11,7 +11,7 @@ pi install git:github.com/sounkou-bioinfo/pi-duckdb-c-extension-skills
 Pin a release:
 
 ```bash
-pi install git:github.com/sounkou-bioinfo/pi-duckdb-c-extension-skills@v0.2.0
+pi install git:github.com/sounkou-bioinfo/pi-duckdb-c-extension-skills@v0.2.1
 ```
 
 ## Included skills
@@ -67,6 +67,7 @@ Load this skill when you are:
 - keeping signatures, aliases, docs, and examples synchronized
 - designing a `functions.yaml`-style machine-readable catalog
 - generating markdown, TSV, wrappers, or validation from one source of truth
+- following the DuckHTS-style Python renderer + JSON-formatted YAML pattern to avoid parser dependencies
 
 ## When to use `duckdb-c-extension-testing-and-interop`
 
@@ -94,7 +95,7 @@ These skills emphasize a few recurring patterns:
 Quick smoke test after install:
 
 ```bash
-pi install git:github.com/sounkou-bioinfo/pi-duckdb-c-extension-skills@v0.2.0
+pi install git:github.com/sounkou-bioinfo/pi-duckdb-c-extension-skills@v0.2.1
 pi list | grep pi-duckdb-c-extension-skills
 ```
 
@@ -114,8 +115,8 @@ Use the duckdb-c-extension-architecture skill and outline a per-database runtime
 
 The package also includes a few concrete supporting references:
 
-- a minimal `functions.example.yaml`
-- a tiny `generate-function-catalog.sh` generator stub
+- a minimal `functions.example.yaml` in JSON-formatted YAML style
+- a tiny `generate_function_catalog.py` generator stub using only Python standard-library modules
 - a DuckTinyCC case study on using `access->get_database(info)` and an extension-managed persistent connection at init time
 
 ## Update
@@ -135,5 +136,5 @@ pi update git:github.com/sounkou-bioinfo/pi-duckdb-c-extension-skills
 If pinned, move explicitly to the current release:
 
 ```bash
-pi install git:github.com/sounkou-bioinfo/pi-duckdb-c-extension-skills@v0.2.0
+pi install git:github.com/sounkou-bioinfo/pi-duckdb-c-extension-skills@v0.2.1
 ```

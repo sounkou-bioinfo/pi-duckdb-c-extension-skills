@@ -57,6 +57,7 @@ Not every project needs every field, but think in that direction.
 ### 1) Keep one canonical source of function metadata
 
 If the extension needs generated docs or wrappers, choose one canonical catalog file and generate derivatives from it.
+Treat generated `functions.md` and `functions.tsv` as build artifacts, not hand-edited sources.
 
 ### 2) Generate human-readable outputs
 
@@ -67,6 +68,9 @@ Common derivatives:
 - README tables
 - R helper registration tables
 - validation scripts
+
+A good default is a small Python renderer wired into `make` so docs can be refreshed reproducibly.
+Prefer the DuckHTS-style pattern where `functions.yaml` is stored as JSON-formatted YAML and rendered with Python standard-library code (`json`, `csv`, `pathlib`) instead of depending on PyYAML.
 
 ### 3) Record lifecycle metadata
 
@@ -85,6 +89,12 @@ Examples should be copyable.
 ### 5) Validate generated outputs in CI
 
 If you generate files from the catalog, CI should detect drift.
+A practical workflow is:
+
+- edit `functions.yaml`
+- run the Python renderer
+- commit regenerated `functions.md` and `functions.tsv`
+- have CI fail if rerendering changes tracked outputs
 
 ## Good outcomes
 
@@ -96,6 +106,7 @@ If you generate files from the catalog, CI should detect drift.
 ## Anti-patterns
 
 - hand-editing generated docs without updating the source catalog
+- requiring PyYAML or another parser dependency when a JSON-formatted YAML manifest and stdlib Python would do
 - function names duplicated inconsistently across SQL and wrappers
 - no lifecycle metadata
 - examples that are not actually tested anywhere
@@ -110,4 +121,4 @@ If you generate files from the catalog, CI should detect drift.
 - [Functions YAML pattern](references/functions-yaml-pattern.md)
 - [Catalog generation checklist](references/catalog-generation-checklist.md)
 - [Example catalog source](references/functions.example.yaml)
-- [Generator stub](references/generate-function-catalog.sh)
+- [Python generator stub](references/generate_function_catalog.py)
