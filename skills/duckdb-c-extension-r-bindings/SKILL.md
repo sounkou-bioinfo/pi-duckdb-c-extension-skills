@@ -54,6 +54,29 @@ If the R package ships extension code or build artifacts:
 - keep vendored native code provenance visible
 - do not duplicate large native trees in several places unless unavoidable
 
+### 2a) Use an explicit bootstrap pattern for CRAN-ready packaging
+
+For CRAN-oriented packages, bootstrap work should be small, explicit, and install-time oriented.
+
+A strong pattern, seen in the general direction used around DuckTinyCC and DuckHTS-style R packaging, is:
+
+- keep the native extension build/test workflow at the repo level
+- stage installed payloads under `inst/duckdb_extension/` when packaging that way
+- use `configure` / `configure.win` only for narrow target-machine adaptation
+- keep compiler/linker rules in `src/Makevars` / `src/Makevars.win`
+- let R wrappers load the installed extension from package paths
+
+This is usually more CRAN-friendly than hiding large native bootstrap work inside first-call runtime behavior.
+
+Typical acceptable bootstrap tasks include:
+
+- probing for a local toolchain detail
+- generating a tiny compatibility file on the target machine
+- writing a small config fragment consumed by `src/Makevars*`
+- selecting or locating the installed extension payload
+
+Avoid bootstrap patterns where the first exported R call silently performs a large native build, downloads opaque binaries, or depends on undocumented shell state.
+
 ### 3) Map R names to SQL names clearly
 
 If R exports helpers such as `pkg_feature()` that call SQL functions:
@@ -162,3 +185,4 @@ If the project also generates a function catalog, prefer embedding that generate
 - [R package layout pattern](references/r-package-layout-pattern.md)
 - [Wrapper responsibility split](references/wrapper-responsibility-split.md)
 - [README.Rmd custom knitr engine pattern](references/readme-rmd-custom-engine-pattern.md)
+- [CRAN bootstrap pattern](references/cran-bootstrap-pattern.md)
